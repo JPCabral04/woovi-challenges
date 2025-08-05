@@ -101,6 +101,7 @@ type Account {
 
 type Mutation {
   MessageAdd(input: MessageAddInput!): MessageAddPayload
+  AccountAdd(input: AccountAddInput!): AccountAddPayload
 }
 
 type MessageAddPayload {
@@ -110,6 +111,16 @@ type MessageAddPayload {
 
 input MessageAddInput {
   content: String!
+  clientMutationId: String
+}
+
+type AccountAddPayload {
+  account: Account
+  clientMutationId: String
+}
+
+input AccountAddInput {
+  name: String!
   clientMutationId: String
 }
 
