@@ -17,6 +17,8 @@ const AccountSchema = new mongoose.Schema(
 
 export interface IAccount extends Document {
   name: string;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 export const Account: Model<IAccount> = mongoose.models['Account'] || mongoose.model('Account', AccountSchema);
