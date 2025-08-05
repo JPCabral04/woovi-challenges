@@ -5,22 +5,18 @@ const AccountSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true
+      description: 'The name of the account holder',
     },
-    timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-    },
-    collection: 'Account',
   },
-)
+  {
+    timestamps: true,
+    collection: 'Account',
+  }
+);
+
 
 export interface IAccount extends Document {
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-const AccountModel: Model<IAccount> = mongoose.models['Account'] || mongoose.model('Account', AccountSchema);
-
-export default AccountModel;
+export const Account: Model<IAccount> = mongoose.models['Account'] || mongoose.model('Account', AccountSchema);
