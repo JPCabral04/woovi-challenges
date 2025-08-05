@@ -93,10 +93,12 @@ type AccountEdge {
 }
 
 """Represents a bank account"""
-type Account {
+type Account implements Node {
   id: ID!
   name: String!
   balance: Float!
+  createdAt: String
+  updatedAt: String
 }
 
 type Mutation {
