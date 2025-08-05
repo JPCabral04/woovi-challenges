@@ -96,8 +96,6 @@ type AccountEdge {
 type Account {
   id: ID!
   name: String!
-  createdAt: String
-  updatedAt: String
   balance: Float!
 }
 
