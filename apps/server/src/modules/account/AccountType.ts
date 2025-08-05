@@ -30,8 +30,17 @@ const AccountType = new GraphQLObjectType<IAccount>({
         // TODO balance account estimate
         return 0;
       }
-    }
+    },
+    createdAt: {
+      type: GraphQLString,
+      resolve: (account) => new Date(account.createdAt).toISOString()
+    },
+    updatedAt: {
+      type: GraphQLString,
+      resolve: (account) => new Date(account.updatedAt).toISOString()
+    },
   }),
+  interfaces: [nodeInterface],
 });
 
 const AccountConnection = connectionDefinitions({

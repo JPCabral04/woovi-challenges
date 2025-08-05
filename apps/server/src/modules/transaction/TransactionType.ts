@@ -7,15 +7,12 @@ import {
   GraphQLEnumType,
 } from 'graphql';
 import { globalIdField, connectionDefinitions } from 'graphql-relay';
-import type { ConnectionArguments } from 'graphql-relay';
 
 import { ITransaction, TransactionTypeEnum } from './TransactionModel';
 import { nodeInterface } from '../node/typeRegister';
 import { registerTypeLoader } from '../node/typeRegister';
 // import { TransactionLoader } from './TransactionLoader';
-// import { AccountType } from '../account/AccountType'; // se quiser tipar os relacionamentos
 
-// 1. Enum GraphQL para transactionType
 const TransactionTypeEnumType = new GraphQLEnumType({
   name: 'TransactionTypeEnum',
   values: {
@@ -51,18 +48,21 @@ const TransactionType = new GraphQLObjectType<ITransaction>({
     },
     createdAt: {
       type: GraphQLString,
-      resolve: (account) => new Date(account.createdAt).toISOString()
+      resolve: (transaction) => new Date(transaction.createdAt).toISOString()
     },
     updatedAt: {
       type: GraphQLString,
-      resolve: (account) => new Date(account.updatedAt).toISOString()
-    }
+      resolve: (transaction) => new Date(transaction.updatedAt).toISOString()
+    },
   }),
   interfaces: [nodeInterface],
 });
 
-// Opcional: registro no sistema global de tipos
-registerTypeLoader(TransactionType, async (id) => {
-  // Retorne o TransactionLoader se usar DataLoader
-  // return await TransactionLoader.load(id);
+const TransactionConnection = connectionDefinitions({
+  name: 'Transaction',
+  nodeType: TransactionType,
 });
+
+// registerTypeLoader(TransactionType, TransactionLoader.load);
+
+export { TransactionType, TransactionConnection };
