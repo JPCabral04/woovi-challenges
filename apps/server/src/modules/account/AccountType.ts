@@ -12,6 +12,8 @@ import { IAccount } from './AccountModel';
 import { nodeInterface } from '../node/typeRegister';
 import { registerTypeLoader } from '../node/typeRegister';
 import { AccountLoader } from './AccountLoader';
+import { calculateBalance } from './accountCalculateBalance';
+
 
 const AccountType = new GraphQLObjectType<IAccount>({
   name: 'Account',
@@ -26,9 +28,11 @@ const AccountType = new GraphQLObjectType<IAccount>({
     },
     balance: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: async () => {
-        // TODO balance account estimate
-        return 0;
+      resolve: async (account) => {
+        const accountId = account._id;
+        const currentBalance = await calculateBalance(accountId);
+
+        return currentBalance;
       }
     },
     createdAt: {
