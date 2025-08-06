@@ -11,7 +11,7 @@ import { globalIdField, connectionDefinitions } from 'graphql-relay';
 import { ITransaction, TransactionTypeEnum } from './TransactionModel';
 import { nodeInterface } from '../node/typeRegister';
 import { registerTypeLoader } from '../node/typeRegister';
-// import { TransactionLoader } from './TransactionLoader';
+import { TransactionLoader } from './TransactionLoader';
 
 const TransactionTypeEnumType = new GraphQLEnumType({
   name: 'TransactionTypeEnum',
@@ -63,6 +63,6 @@ const TransactionConnection = connectionDefinitions({
   nodeType: TransactionType,
 });
 
-// registerTypeLoader(TransactionType, TransactionLoader.load);
+registerTypeLoader(TransactionType, TransactionLoader.load);
 
 export { TransactionType, TransactionConnection };
