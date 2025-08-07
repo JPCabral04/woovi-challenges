@@ -8,19 +8,10 @@ import {
 } from 'graphql';
 import { globalIdField, connectionDefinitions } from 'graphql-relay';
 
-import { ITransaction, TransactionTypeEnum } from './TransactionModel';
+import { ITransaction } from './TransactionModel';
 import { nodeInterface } from '../node/typeRegister';
 import { registerTypeLoader } from '../node/typeRegister';
-import { TransactionLoader } from './TransactionLoader';
-
-const TransactionTypeEnumType = new GraphQLEnumType({
-  name: 'TransactionTypeEnum',
-  values: {
-    CREDIT: { value: TransactionTypeEnum.CREDIT },
-    DEBIT: { value: TransactionTypeEnum.DEBIT },
-    PIX: { value: TransactionTypeEnum.PIX },
-  },
-});
+import { TransactionLoader } from './TransactionLoader'
 
 const TransactionType = new GraphQLObjectType<ITransaction>({
   name: 'Transaction',
@@ -33,16 +24,13 @@ const TransactionType = new GraphQLObjectType<ITransaction>({
     amount: {
       type: new GraphQLNonNull(GraphQLFloat),
     },
-    transactionType: {
-      type: new GraphQLNonNull(TransactionTypeEnumType),
-    },
     fromAccountId: {
-      type: GraphQLID,
+      type: new GraphQLNonNull(GraphQLID),
       description: 'ID of the sender account',
       resolve: (transaction) => transaction.fromAccountId?.toString(),
     },
     toAccountId: {
-      type: GraphQLID,
+      type: new GraphQLNonNull(GraphQLID),
       description: 'ID of the receiver account',
       resolve: (transaction) => transaction.toAccountId?.toString(),
     },

@@ -1,22 +1,11 @@
 import mongoose, { Document, Model, Schema, Types } from "mongoose";
 
-export enum TransactionTypeEnum {
-  CREDIT = 'CREDIT',
-  DEBIT = 'DEBIT',
-  PIX = 'PIX'
-}
-
 const TransactionSchema = new Schema(
   {
     amount: {
       type: Number,
       min: [0.01, 'Transaction amount must be positive.'],
       description: 'The value of the transaction.',
-    },
-    transactionType: {
-      type: String,
-      enum: Object.values(TransactionTypeEnum),
-      description: 'The type of the transaction (CREDIT, DEBIT, PIX).',
     },
     fromAccountId: {
       type: Schema.Types.ObjectId,
@@ -37,9 +26,8 @@ const TransactionSchema = new Schema(
 
 export interface ITransaction extends Document {
   amount: number;
-  transactionType: TransactionTypeEnum;
-  fromAccountId?: Types.ObjectId;
-  toAccountId?: Types.ObjectId;
+  fromAccountId: Types.ObjectId;
+  toAccountId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
