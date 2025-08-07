@@ -25,6 +25,19 @@ type Query {
     """Returns the last n items from the list."""
     last: Int
   ): AccountConnection
+  transactions(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): TransactionConnection
 }
 
 """A connection to a list of items."""
@@ -101,9 +114,42 @@ type Account implements Node {
   updatedAt: String
 }
 
+"""A connection to a list of items."""
+type TransactionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TransactionEdge]
+}
+
+"""An edge in a connection."""
+type TransactionEdge {
+  """The item at the end of the edge"""
+  node: Transaction
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""Represents a bank transaction"""
+type Transaction implements Node {
+  id: ID!
+  amount: Float!
+
+  """ID of the sender account"""
+  fromAccountId: ID!
+
+  """ID of the receiver account"""
+  toAccountId: ID!
+  createdAt: String
+  updatedAt: String
+}
+
 type Mutation {
   MessageAdd(input: MessageAddInput!): MessageAddPayload
   AccountAdd(input: AccountAddInput!): AccountAddPayload
+  TransactionSend(input: TransactionSendInput!): TransactionSendPayload
 }
 
 type MessageAddPayload {
@@ -123,6 +169,18 @@ type AccountAddPayload {
 
 input AccountAddInput {
   name: String!
+  clientMutationId: String
+}
+
+type TransactionSendPayload {
+  transaction: Transaction
+  clientMutationId: String
+}
+
+input TransactionSendInput {
+  amount: Float!
+  fromAccountId: ID!
+  toAccountId: ID!
   clientMutationId: String
 }
 
