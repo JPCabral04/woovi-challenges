@@ -24,8 +24,8 @@ const mutation = mutationWithClientMutationId({
   mutateAndGetPayload: async (args: TransactionSendInput) => {
     const { fromAccountId, toAccountId, amount } = args;
 
-    const fromId = fromGlobalId(fromAccountId).id;
-    const toId = fromGlobalId(toAccountId).id;
+    const fromId = fromAccountId;
+    const toId = toAccountId;
 
     if (amount <= 0) {
       throw new GraphQLError('Transaction amount must be positive.');
@@ -51,13 +51,11 @@ const mutation = mutationWithClientMutationId({
       toAccountId: toId,
     }).save();
 
-    // Publica o evento com os IDs das duas contas afetadas
-    await redisPubSub.publish(PUB_SUB_EVENTS.BALANCE_UPDATED, {
-      affectedAccountIds: [fromId, toId],
-    });
+    // await redisPubSub.publish(PUB_SUB_EVENTS.BALANCE_UPDATED, {
+    //   affectedAccountIds: [fromId, toId],
+    // });
 
     return {
-      // Retorna o ID para a fábrica 'transactionField' usar
       transaction: transaction._id.toString(),
     };
   },
