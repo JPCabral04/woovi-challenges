@@ -2,4 +2,5 @@ export const PUB_SUB_EVENTS = {
 	MESSAGE: {
 		ADDED: 'MESSAGE:ADDED',
 	},
+	BALANCE_UPDATED: 'BALANCE_UPDATED',
 } as const;
